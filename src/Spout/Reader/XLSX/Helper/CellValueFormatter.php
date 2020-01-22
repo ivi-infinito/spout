@@ -133,6 +133,13 @@ class CellValueFormatter
         // inline strings are formatted this way:
         // <c r="A1" t="inlineStr"><is><t>[INLINE_STRING]</t></is></c>
         $tNode = $node->getElementsByTagName(self::XML_NODE_INLINE_STRING_VALUE)->item(0);
+
+        // For invalid spreadsheet xml - some may not include the <t> node.
+        // Hence need to check object exists before accessing property.
+        if (!is_object($tNode)) {
+            return '';
+        }
+
         $cellValue = $this->escaper->unescape($tNode->nodeValue);
 
         return $cellValue;
